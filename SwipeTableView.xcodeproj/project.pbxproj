@@ -13,6 +13,8 @@
 		FECCB0291D5C649D002FDD6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FECCB0271D5C649D002FDD6C /* Main.storyboard */; };
 		FECCB02B1D5C649D002FDD6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FECCB02A1D5C649D002FDD6C /* Assets.xcassets */; };
 		FECCB02E1D5C649D002FDD6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FECCB02C1D5C649D002FDD6C /* LaunchScreen.storyboard */; };
+		FECCB03B1D5C65C7002FDD6C /* SwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB03A1D5C65C7002FDD6C /* SwipeButton.m */; };
+		FECCB03E1D5C65E5002FDD6C /* SwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB03D1D5C65E5002FDD6C /* SwipeTableCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,10 @@
 		FECCB02A1D5C649D002FDD6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FECCB02D1D5C649D002FDD6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FECCB02F1D5C649D002FDD6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FECCB0391D5C65C7002FDD6C /* SwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeButton.h; sourceTree = "<group>"; };
+		FECCB03A1D5C65C7002FDD6C /* SwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeButton.m; sourceTree = "<group>"; };
+		FECCB03C1D5C65E5002FDD6C /* SwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeTableCell.h; sourceTree = "<group>"; };
+		FECCB03D1D5C65E5002FDD6C /* SwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeTableCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +48,7 @@
 		FECCB0121D5C649D002FDD6C = {
 			isa = PBXGroup;
 			children = (
+				FECCB0351D5C6550002FDD6C /* Swipe */,
 				FECCB01D1D5C649D002FDD6C /* SwipeTableView */,
 				FECCB01C1D5C649D002FDD6C /* Products */,
 			);
@@ -79,6 +86,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FECCB0351D5C6550002FDD6C /* Swipe */ = {
+			isa = PBXGroup;
+			children = (
+				FECCB0391D5C65C7002FDD6C /* SwipeButton.h */,
+				FECCB03A1D5C65C7002FDD6C /* SwipeButton.m */,
+				FECCB03C1D5C65E5002FDD6C /* SwipeTableCell.h */,
+				FECCB03D1D5C65E5002FDD6C /* SwipeTableCell.m */,
+			);
+			path = Swipe;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -110,6 +128,7 @@
 				TargetAttributes = {
 					FECCB01A1D5C649D002FDD6C = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 68JDS85SLB;
 					};
 				};
 			};
@@ -149,7 +168,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FECCB03B1D5C65C7002FDD6C /* SwipeButton.m in Sources */,
 				FECCB0261D5C649D002FDD6C /* ViewController.m in Sources */,
+				FECCB03E1D5C65E5002FDD6C /* SwipeTableCell.m in Sources */,
 				FECCB0231D5C649D002FDD6C /* AppDelegate.m in Sources */,
 				FECCB0201D5C649D002FDD6C /* main.m in Sources */,
 			);
@@ -263,6 +284,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SwipeTableView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Eman.SwipeTableView;
@@ -274,6 +296,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SwipeTableView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Eman.SwipeTableView;
@@ -300,6 +323,7 @@
 				FECCB0341D5C649D002FDD6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
