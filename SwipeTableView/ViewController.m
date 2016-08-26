@@ -33,7 +33,7 @@
     
     for(int i=0; i<10; i++)
     {
-        [self.dataArray addObject:[NSString stringWithFormat:@"测试数据%4d", i]];
+        [self.dataArray addObject:[NSString stringWithFormat:@"测试数据%10d", i+100]];
     }
 }
 
@@ -54,15 +54,16 @@
     SwipeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CELL"];
     if(cell ==  nil)
     {
-        cell = [[SwipeTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
+        cell = [[SwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CELL"];
     }
     
     cell.swipeDelegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = self.dataArray[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
-    cell.detailTextLabel.text = self.dataArray[indexPath.row];
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+    cell.detailTextLabel.text = @"fuck";
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
     
     return cell;
 }
@@ -77,7 +78,10 @@
 
 - (SwipeTableCellStyle)tableView:(UITableView *)tableView styleOfSwipeButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row % 2 == 0){
+    if(indexPath.row == 0){
+        return SwipeTableCellStyleBoth;
+    }
+    else if(indexPath.row % 2 == 0){
         return SwipeTableCellStyleRightToLeft;
     }
     else{
@@ -87,27 +91,30 @@
 
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView leftSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithTitle:@"删除删除山峰" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor redColor] image:[UIImage imageNamed:@"check"] touchBlock:^{
+        
+        NSLog(@"点击了check按钮");
+    }];
+    return @[checkBtn];
 }
 
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView rightSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
 {
-    SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"check"] touchBlock:^{
+    SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"check"]  backgroundColor:[UIColor redColor] touchBlock:^{
         
         NSLog(@"点击了check按钮");
     }];
-    checkBtn.frame = CGRectMake(0, 0, 60, 23);
     
-    SwipeButton *favBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"fav"] touchBlock:^{
+    SwipeButton *favBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"fav"] backgroundColor:[UIColor greenColor] touchBlock:^{
         
         NSLog(@"点击了fav按钮");
     }];
-    favBtn.frame = CGRectMake(0, 0, 50, 23);
     
-    SwipeButton *menuBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"menu"] touchBlock:^{
+    SwipeButton *menuBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"menu"] backgroundColor:[UIColor blueColor] touchBlock:^{
         
         NSLog(@"点击了menu按钮");
     }];
+    
     return @[checkBtn, favBtn, menuBtn];
 }
 

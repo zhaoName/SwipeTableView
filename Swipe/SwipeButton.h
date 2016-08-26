@@ -15,24 +15,29 @@ typedef void(^TouchSwipeButtonBlock)(void);
 @property (nonatomic, strong) TouchSwipeButtonBlock touchBlock;
 
 /**
- *  创建左滑或右滑时的button
+ *  创建左滑或右滑时的button， button只有title没有Image
  *
- *  @param title button的标题 可为空
+ *  @param title button的标题
  *  @param font  button的字体大小 默认为15
  *  @param textColor button的字体颜色 默认黑色
  *  @param backgroundColor  button的背景颜色 默认白色
- *  @param image button的背景图片 可为空
  */
 + (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title touchBlock:(TouchSwipeButtonBlock)block;
 
-+ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(UIFont *)font textColor:(UIColor *)textColor touchBlock:(TouchSwipeButtonBlock)block;
++ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor touchBlock:(TouchSwipeButtonBlock)block;
 
-+ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(UIFont *)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor touchBlock:(TouchSwipeButtonBlock)block;
++ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor touchBlock:(TouchSwipeButtonBlock)block;
 
 
-+ (SwipeButton *)createSwipeButtonWithImage:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block;
+/**
+ *   创建左滑或右滑时的button， button只有Image没有title
+ */
++ (SwipeButton *)createSwipeButtonWithImage:(UIImage *)image backgroundColor:(UIColor *)color touchBlock:(TouchSwipeButtonBlock)block;
 
-+ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(UIFont *)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor image:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block;
+/**
+ *  创建左滑或右滑时的button,且image在上 title在下
+ */
++ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor image:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block;
 
 
 @end

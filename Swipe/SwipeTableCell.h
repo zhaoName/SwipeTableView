@@ -16,9 +16,10 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
     SwipeTableCellStyleBoth, /**< 左滑、右滑都有*/
 };
 
+@class SwipeTableCell;
 @protocol SwipeTableViewDelegate <NSObject>
 
-@optional
+@required
 /**
  *  设置cell的滑动按钮的样式
  *
@@ -40,6 +41,12 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
  */
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView rightSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath;
 
+@optional
+/**
+ *  当滑动手势结束后，点击cell是否隐藏swipeView，即cell自动回复到最初状态。默认YES
+ */
+- (BOOL)swipeCell:(SwipeTableCell *)swipeCell hiddenSwipeViewWhenTapCell:(CGPoint)tapPoint;
+
 @end
 
 
@@ -49,6 +56,8 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 @interface SwipeTableCell : UITableViewCell
 
 @property (nonatomic, weak) id<SwipeTableViewDelegate> swipeDelegate;
+@property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动*/
+@property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏按钮的临界值 范围:0-1，默认0.5*/
 
 
 @end
