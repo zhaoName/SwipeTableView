@@ -54,16 +54,22 @@
     SwipeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CELL"];
     if(cell ==  nil)
     {
-        cell = [[SwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CELL"];
+        cell = [[SwipeTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
     }
     
     cell.swipeDelegate = self;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = self.dataArray[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     cell.detailTextLabel.text = @"fuck";
     cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
+    if(indexPath.row < 3){
+        cell.transformModel = SwipeViewTransfromModeBorder;
+    }
+    else if (indexPath.row >7){
+        cell.transformModel = SwipeViewTransfromMode3D;
+    }
     
     return cell;
 }
@@ -91,11 +97,15 @@
 
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView leftSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
 {
-    SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithTitle:@"删除删除山峰" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor redColor] image:[UIImage imageNamed:@"check"] touchBlock:^{
+    SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithTitle:@"删除峰删除" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor redColor] image:[UIImage imageNamed:@"check"] touchBlock:^{
         
         NSLog(@"点击了check按钮");
     }];
-    return @[checkBtn];
+    SwipeButton *menuBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"menu"] backgroundColor:[UIColor blueColor] touchBlock:^{
+        
+        NSLog(@"点击了menu按钮");
+    }];
+    return @[checkBtn, menuBtn];
 }
 
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView rightSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
@@ -114,8 +124,20 @@
         
         NSLog(@"点击了menu按钮");
     }];
+    SwipeButton *titleBtn = [SwipeButton createSwipeButtonWithTitle:@"哈哈哈哈哈啊" backgroundColor:[UIColor grayColor] touchBlock:^{
+       
+        NSLog(@"点击了哈哈哈哈哈啊");
+    }];
     
-    return @[checkBtn, favBtn, menuBtn];
+    if(indexPath.row == 0){
+        return @[checkBtn, favBtn, menuBtn, titleBtn];
+    }
+    else if(indexPath.row == 2){
+        return @[favBtn, menuBtn];
+    }
+    else{
+        return @[checkBtn, titleBtn];
+    }
 }
 
 #pragma mark -- getter

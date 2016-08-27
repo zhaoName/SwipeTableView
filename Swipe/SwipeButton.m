@@ -12,15 +12,10 @@
 
 @implementation SwipeButton
 
-//只有文字
-+ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title touchBlock:(TouchSwipeButtonBlock)block
+//只有title
++ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title backgroundColor:(UIColor *)backgroundColor touchBlock:(TouchSwipeButtonBlock)block
 {
-    return [self createSwipeButtonWithTitle:title font:15 textColor:[UIColor blackColor] touchBlock:block];
-}
-
-+ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor touchBlock:(TouchSwipeButtonBlock)block
-{
-    return [self createSwipeButtonWithTitle:title font:font textColor:textColor backgroundColor:[UIColor whiteColor] touchBlock:block];
+    return [self createSwipeButtonWithTitle:title font:15 textColor:[UIColor blackColor] backgroundColor:backgroundColor  touchBlock:block];
 }
 
 + (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor touchBlock:(TouchSwipeButtonBlock)block
@@ -35,7 +30,7 @@
     return [self createSwipeButtonWithTitle:nil font:15 textColor:[UIColor blackColor] backgroundColor:color image:image touchBlock:block];
 }
 
-//图片、文字都有，切图片在上 文字在下
+//图片、文字都有，且图片在上 文字在下
 + (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor image:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block
 {
     SwipeButton *button = [self buttonWithType:UIButtonTypeCustom];
