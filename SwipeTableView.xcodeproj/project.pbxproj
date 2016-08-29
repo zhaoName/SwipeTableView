@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FEBE61861D73D8B70066D757 /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBE61851D73D8B70066D757 /* SwipeView.m */; };
 		FECCB0201D5C649D002FDD6C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB01F1D5C649D002FDD6C /* main.m */; };
 		FECCB0231D5C649D002FDD6C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB0221D5C649D002FDD6C /* AppDelegate.m */; };
 		FECCB0261D5C649D002FDD6C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB0251D5C649D002FDD6C /* ViewController.m */; };
@@ -15,10 +16,11 @@
 		FECCB02E1D5C649D002FDD6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FECCB02C1D5C649D002FDD6C /* LaunchScreen.storyboard */; };
 		FECCB03B1D5C65C7002FDD6C /* SwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB03A1D5C65C7002FDD6C /* SwipeButton.m */; };
 		FECCB03E1D5C65E5002FDD6C /* SwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB03D1D5C65E5002FDD6C /* SwipeTableCell.m */; };
-		FEDD922E1D7131B600D54EE6 /* SwipeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDD922D1D7131B600D54EE6 /* SwipeAnimation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FEBE61841D73D8B70066D757 /* SwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeView.h; sourceTree = "<group>"; };
+		FEBE61851D73D8B70066D757 /* SwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeView.m; sourceTree = "<group>"; };
 		FECCB01B1D5C649D002FDD6C /* SwipeTableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeTableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FECCB01F1D5C649D002FDD6C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FECCB0211D5C649D002FDD6C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -33,8 +35,6 @@
 		FECCB03A1D5C65C7002FDD6C /* SwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeButton.m; sourceTree = "<group>"; };
 		FECCB03C1D5C65E5002FDD6C /* SwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeTableCell.h; sourceTree = "<group>"; };
 		FECCB03D1D5C65E5002FDD6C /* SwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeTableCell.m; sourceTree = "<group>"; };
-		FEDD922C1D7131B600D54EE6 /* SwipeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeAnimation.h; sourceTree = "<group>"; };
-		FEDD922D1D7131B600D54EE6 /* SwipeAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeAnimation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +96,8 @@
 				FECCB03A1D5C65C7002FDD6C /* SwipeButton.m */,
 				FECCB03C1D5C65E5002FDD6C /* SwipeTableCell.h */,
 				FECCB03D1D5C65E5002FDD6C /* SwipeTableCell.m */,
-				FEDD922C1D7131B600D54EE6 /* SwipeAnimation.h */,
-				FEDD922D1D7131B600D54EE6 /* SwipeAnimation.m */,
+				FEBE61841D73D8B70066D757 /* SwipeView.h */,
+				FEBE61851D73D8B70066D757 /* SwipeView.m */,
 			);
 			path = Swipe;
 			sourceTree = "<group>";
@@ -175,10 +175,10 @@
 			files = (
 				FECCB03B1D5C65C7002FDD6C /* SwipeButton.m in Sources */,
 				FECCB0261D5C649D002FDD6C /* ViewController.m in Sources */,
+				FEBE61861D73D8B70066D757 /* SwipeView.m in Sources */,
 				FECCB03E1D5C65E5002FDD6C /* SwipeTableCell.m in Sources */,
 				FECCB0231D5C649D002FDD6C /* AppDelegate.m in Sources */,
 				FECCB0201D5C649D002FDD6C /* main.m in Sources */,
-				FEDD922E1D7131B600D54EE6 /* SwipeAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

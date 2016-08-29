@@ -62,14 +62,6 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = self.dataArray[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
-    cell.detailTextLabel.text = @"fuck";
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
-    if(indexPath.row < 3){
-        cell.transformModel = SwipeViewTransfromModeBorder;
-    }
-    else if (indexPath.row >7){
-        cell.transformModel = SwipeViewTransfromMode3D;
-    }
     
     return cell;
 }
@@ -82,6 +74,7 @@
 
 #pragma mark -- SwipeTableViewDelegate
 
+//cell的滑动样式
 - (SwipeTableCellStyle)tableView:(UITableView *)tableView styleOfSwipeButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0){
@@ -95,6 +88,7 @@
     }
 }
 
+//左滑buttons
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView leftSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
 {
     SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithTitle:@"删除峰删除" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor redColor] image:[UIImage imageNamed:@"check"] touchBlock:^{
@@ -108,6 +102,7 @@
     return @[checkBtn, menuBtn];
 }
 
+//右滑buttons
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView rightSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
 {
     SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"check"]  backgroundColor:[UIColor redColor] touchBlock:^{
@@ -138,6 +133,18 @@
     else{
         return @[checkBtn, titleBtn];
     }
+}
+
+//swipeView的弹出样式 **也可以不实现协议方法 直接修改cell.transformMode**
+- (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row < 3){
+        return  SwipeViewTransfromModeBorder;
+    }
+    else if (indexPath.row > 7){
+        return SwipeViewTransfromMode3D;
+    }
+    return SwipeViewTransfromModeDefault;
 }
 
 #pragma mark -- getter

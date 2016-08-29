@@ -1,12 +1,11 @@
 //
-//  SwipeAnimation.h
+//  SwipeView.h
 //  SwipeTableView
 //
-//  Created by zhao on 16/8/27.
+//  Created by zhao on 16/8/29.
 //  Copyright © 2016年 zhaoName. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
@@ -29,7 +28,7 @@ typedef NS_ENUM(NSUInteger, SwipeViewTransfromMode)
     SwipeViewTransfromMode3D, /**< 3D*/
 };
 
-@interface SwipeAnimation : NSObject
+@interface SwipeView : UIView
 
 @property (nonatomic, assign) CGFloat from;
 @property (nonatomic, assign) CGFloat to;
@@ -39,12 +38,23 @@ typedef NS_ENUM(NSUInteger, SwipeViewTransfromMode)
 @property (nonatomic, assign) SwipeViewTransfromMode mode;/**< swipeView的弹出效果*/
 
 /**
+ *  初始化swipeView，添加滑动按钮
+ */
+
+- (instancetype)initWithButtons:(NSArray *)buttos fromRight:(BOOL)fromRight cellHeght:(CGFloat)cellHeight;
+
+/**
  *  滑动手势滑动的距离超过swipeView的一半时，会自动显示或隐藏swipeView
  */
 - (CGFloat)value:(CGFloat)elapsed duration:(CGFloat)duration from:(CGFloat)from to:(CGFloat)to;
 
-
-
-- (void)swipeView:(UIView *)swipeView swipeButtons:(NSArray *)buttons fromRight:(BOOL)fromRight effect:(CGFloat)t cellHeight:(CGFloat)cellHeight;
+/**
+ *  swipeView的弹出、隐藏动画
+ *
+ *  @param fromRight  右滑
+ *  @param t          动画控制量
+ *  @param cellHeight cell的高度
+ */
+- (void)swipeViewAnimationFromRight:(BOOL)fromRight effect:(CGFloat)t cellHeight:(CGFloat)cellHeight;
 
 @end

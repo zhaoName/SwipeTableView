@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SwipeButton.h"
-#import "SwipeAnimation.h"
+#import "SwipeView.h"
 
 
 typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 
 @required
 /**
- *  设置cell的滑动按钮的样式
+ *  设置cell的滑动按钮的样式 左滑、右滑、左滑右滑都有
  *
  *  @param indexPath cell的位置
  */
@@ -48,6 +48,11 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
  */
 - (BOOL)tableView:(UITableView *)tableView hiddenSwipeViewWhenTapCellAtIndexpath:(NSIndexPath *)indexPath;
 
+/**
+ *  swipeView的弹出样式
+ */
+- (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 
@@ -60,6 +65,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 @property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动*/
 @property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏按钮的临界值 范围:0-1，默认0.5*/
 
-@property (nonatomic, assign) SwipeViewTransfromMode transformModel; /**< swipeView的弹出效果*/
+@property (nonatomic, assign) SwipeViewTransfromMode transformMode; /**< swipeView的弹出效果*/
+@property (nonatomic, assign) BOOL hideSwipeViewWhenScrollCell; /**< 滚动cell时是否隐藏swipeView 默认YES*/
 
 @end

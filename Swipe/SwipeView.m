@@ -1,12 +1,13 @@
 //
-//  SwipeAnimation.m
+//  SwipeView.m
 //  SwipeTableView
 //
-//  Created by zhao on 16/8/27.
+//  Created by zhao on 16/8/29.
 //  Copyright © 2016年 zhaoName. All rights reserved.
 //
 
-#import "SwipeAnimation.h"
+#import "SwipeView.h"
+#import "SwipeButton.h"
 
 static inline CGFloat mgEaseLinear(CGFloat t, CGFloat b, CGFloat c) {
     return c*t + b;
@@ -58,16 +59,60 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     return mgEaseOutBounce (1.0 - t*2, 0, c) * .5 + c*.5 + b;
 };
 
-@implementation SwipeAnimation
 
--(instancetype) init {
-    if (self = [super init]) {
-        _duration = 0.3;
-        _mode =  SwipeViewTransfromModeDefault;
-        _easingFunction = MGSwipeEasingFunctionCubicOut;
+
+
+@interface SwipeView ()
+
+@property (nonatomic, strong) UIView *containView; /**< 装swipeButton的容器*/
+@property (nonatomic, strong) NSArray *buttonArray; /**< 重新排序后的buttons*/
+
+@end
+
+@implementation SwipeView
+
+- (instancetype)initWithButtons:(NSArray *)buttos fromRight:(BOOL)fromRight cellHeght:(CGFloat)cellHeight
+{
+    CGFloat containerWidth = 0;
+    //计算buttons的总宽度
+    for(SwipeButton *button in buttos){
+        containerWidth += MAX(button.frame.size.width, cellHeight);
+    }
+    
+    if([super initWithFrame:CGRectMake(0, 0, containerWidth, cellHeight)])
+    {
+        
+        self.duration = 0.3;
+        self.easingFunction = MGSwipeEasingFunctionCubicOut;
+        
+        //若是右滑 则倒序。即将数组的最后一个元素放在swipeView的最后
+        self.buttonArray = fromRight ? [[buttos reverseObjectEnumerator] allObjects] : buttos;
+        [self addSubview:self.containView];
+        
+        CGFloat offset = 0.0;
+        for(SwipeButton *button in self.buttonArray)
+        {
+            button.frame = CGRectMake(offset, 0, MAX(button.frame.size.width, cellHeight), cellHeight);
+            offset += button.frame.size.width;
+            //防止重用问题，移除点击事件
+            [button removeTarget:self action:@selector(touchSwipeButton:) forControlEvents:UIControlEventTouchUpInside];
+            [button addTarget:self action:@selector(touchSwipeButton:) forControlEvents:UIControlEventTouchUpInside];
+            //直接用addSubview会覆盖左滑的动画效果
+            [self.containView insertSubview:button atIndex:fromRight ? self.containView.subviews.count : 0];
+        }
     }
     return self;
 }
+
+/**
+ *  点击滑动按钮的响应事件
+ */
+- (void)touchSwipeButton:(SwipeButton *)btn
+{
+    btn.touchBlock();
+}
+
+#pragma mark -- 动画效果
 
 //手势动画效果
 -(CGFloat)value:(CGFloat)elapsed duration:(CGFloat)duration from:(CGFloat)from to:(CGFloat)to
@@ -93,46 +138,40 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     return (*easingFunction)(t, from, to - from);
 }
 
-//swipeView的演出动画效果
-- (void)swipeView:(UIView *)swipeView swipeButtons:(NSArray *)buttons fromRight:(BOOL)fromRight effect:(CGFloat)t cellHeight:(CGFloat)cellHeight
+//swipeView的弹出动画效果
+- (void)swipeViewAnimationFromRight:(BOOL)fromRight effect:(CGFloat)t cellHeight:(CGFloat)cellHeight
 {
     switch (self.mode)
     {
         case SwipeViewTransfromModeDefault:break; //默认的效果
-        case SwipeViewTransfromModeBorder:
+        case SwipeViewTransfromModeBorder: //渐出
         {
-            CGFloat selfWidth = swipeView.bounds.size.width;
+            CGFloat selfWidth = self.bounds.size.width;
             CGFloat offsetX = 0;
             
-            [self removeAllSubViewsAtView:swipeView];
-            for (UIButton *button in buttons)
+            for (SwipeButton *button in self.buttonArray)
             {
                 CGRect frame = button.frame;
                 CGFloat x = fromRight ? offsetX * t :(selfWidth - MAX(frame.size.width, cellHeight) - offsetX) * (1.0 - t) + offsetX;
-                frame = CGRectMake(x, 0,  MAX(frame.size.width, cellHeight), cellHeight);
-                button.frame = frame;
+                button.frame = CGRectMake(x, 0,  MAX(frame.size.width, cellHeight), cellHeight);
                 offsetX += MAX(frame.size.width, cellHeight);
-                //直接用addSubview会覆盖左滑的动画效果
-                [swipeView insertSubview:button atIndex:fromRight ? swipeView.subviews.count : 0];
             }
-            break;
         }
-        case SwipeViewTransfromMode3D:
+            break;;
+        case SwipeViewTransfromMode3D: //3D
         {
             const CGFloat invert = fromRight ? -1.0 : 1.0;
             const CGFloat angle = M_PI_2 * (1.0 - t) * invert;
             CATransform3D transform = CATransform3DIdentity;
             transform.m34 = -1.0/400.0f;
-            const CGFloat dx = -MAX(swipeView.frame.size.width, cellHeight) * 0.5 * invert;
-            const CGFloat offset = dx * 2 * (1.0 - t);
+            const CGFloat dx = -_containView.frame.size.width * 0.5 * invert;
+            const CGFloat offset = dx * 2 * (1.0-t);
             transform = CATransform3DTranslate(transform, dx - offset, 0, 0);
             transform = CATransform3DRotate(transform, angle, 0.0, 1.0, 0.0);
             transform = CATransform3DTranslate(transform, -dx, 0, 0);
-            swipeView.layer.transform = transform;
-            
-             NSLog(@"%f, %f, %f", t, dx, offset);
-            break;
+            self.containView.layer.transform = transform;
         }
+            break;
     }
 }
 
@@ -144,6 +183,26 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+#pragma mark -- 懒加载
 
+- (UIView *)containView
+{
+    if(!_containView)
+    {
+        _containView = [[UIView alloc] initWithFrame:self.bounds];
+        _containView.backgroundColor = [UIColor clearColor];
+        _containView.clipsToBounds = YES;
+    }
+    return _containView;
+}
+
+- (NSArray *)buttonArray
+{
+    if(!_buttonArray)
+    {
+        _buttonArray = [NSArray array];
+    }
+    return _buttonArray;
+}
 
 @end
