@@ -18,7 +18,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
     SwipeTableCellStyleBoth, /**< 左滑、右滑都有*/
 };
 
-@protocol SwipeTableViewDelegate <NSObject>
+@protocol SwipeTableViewCellDelegate <NSObject>
 
 @required
 /**
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 @class SwipeTableViewDelegate;
 @interface SwipeTableCell : UITableViewCell
 
-@property (nonatomic, weak) id<SwipeTableViewDelegate> swipeDelegate;
+@property (nonatomic, weak) id<SwipeTableViewCellDelegate> swipeDelegate;
 @property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动*/
 @property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏按钮的临界值 范围:0-1，默认0.5*/
 
