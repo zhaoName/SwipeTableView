@@ -31,6 +31,11 @@
 }
 
 //图片、文字都有，且图片在上 文字在下
++ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title backgroundColor:(UIColor *)backgroundColor image:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block
+{
+    return [self createSwipeButtonWithTitle:title font:15 textColor:[UIColor blackColor] backgroundColor:backgroundColor image:image touchBlock:block];
+}
+
 + (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor image:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block
 {
     SwipeButton *button = [self buttonWithType:UIButtonTypeCustom];
@@ -42,19 +47,21 @@
     [button setImage:image forState:UIControlStateNormal];
     button.touchBlock = block;
     
+    //算出文字的size
     CGSize titleSize = [title boundingRectWithSize:CGSizeMake(MAXFLOAT, button.titleLabel.frame.size.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:font]} context:nil].size;
+    //button的宽度去文字和图片两个中的最大宽度 其它值将在SwipeTableView中设置
     button.frame = CGRectMake(0, 0, MAX(titleSize.width+10, image.size.width+10), 0);
     if(!NULL_STRING(title) && !image)
     {
-        button.titleEdgeInsets =UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
-        button.imageEdgeInsets =UIEdgeInsetsMake(-titleSize.height, 0.5*titleSize.width, 0.5*titleSize.height, 0);
+        button.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
+        button.imageEdgeInsets = UIEdgeInsetsMake(-titleSize.height, 0.5*titleSize.width, 0.5*titleSize.height, 0);
     }
     
     return button;
 }
 
 /**
- *  防止文字太长 导致图片的位置不在中间
+ *  防止文字太长或图片太大 导致图片或文字的位置不在中间
  */
 - (void)layoutSubviews
 {

@@ -49,7 +49,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 - (BOOL)tableView:(UITableView *)tableView hiddenSwipeViewWhenTapCellAtIndexpath:(NSIndexPath *)indexPath;
 
 /**
- *  swipeView的弹出样式
+ *  设置swipeView的弹出样式
  */
 - (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath;
 
@@ -67,5 +67,8 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 
 @property (nonatomic, assign) SwipeViewTransfromMode transformMode; /**< swipeView的弹出效果*/
 @property (nonatomic, assign) BOOL hideSwipeViewWhenScrollCell; /**< 滚动cell时是否隐藏swipeView 默认YES*/
+@property (nonatomic, assign) BOOL isRefreshButton;
+
+- (void)refreshButtonsWithTitle:(NSString *)title;
 
 @end

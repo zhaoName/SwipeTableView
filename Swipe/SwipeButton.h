@@ -35,6 +35,8 @@ typedef void(^TouchSwipeButtonBlock)(void);
 /**
  *  创建左滑或右滑时的button,文字图片同时存在，且image在上 title在下
  */
++ (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title backgroundColor:(UIColor *)backgroundColor image:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block;
+
 + (SwipeButton *)createSwipeButtonWithTitle:(NSString *)title font:(CGFloat)font textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor image:(UIImage *)image touchBlock:(TouchSwipeButtonBlock)block;
 
 

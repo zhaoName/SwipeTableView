@@ -11,6 +11,7 @@
 #define CELL_WIDTH self.bounds.size.width
 #define CELL_HEIGHT self.bounds.size.height
 
+
 @interface SwipeTableCell ()<UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView; /**< 当前cell所在的tableView*/
@@ -35,7 +36,7 @@
 @property (nonatomic, assign) BOOL isShowSwipeOverlayView; /**< 保证显示、隐藏swipeImageView方法只走一次*/
 
 @property (nonatomic, strong) CADisplayLink *dispalyLink; /**<定时器 一秒60次*/
-@property (nonatomic, assign) UITableViewCellSelectionStyle previousSelectStyle;
+@property (nonatomic, assign) UITableViewCellSelectionStyle previousSelectStyle;/**< 先前cell的选中样式*/
 
 @end
 
@@ -77,10 +78,30 @@
     self.isAllowMultipleSwipe = NO;
     self.isShowSwipeOverlayView = NO;
     self.hideSwipeViewWhenScrollCell = YES;
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
     self.panGesture.delegate = self;
     [self addGestureRecognizer:self.panGesture];
+}
+
+- (void)refreshButtonsWithTitle:(NSString *)title
+{
+    if(self.rightSwipeView)
+    {
+        [self.rightSwipeView removeFromSuperview];
+        self.rightSwipeView = nil;
+    }
+    if(self.leftSwipeView)
+    {
+        [self.leftSwipeView removeFromSuperview];
+        self.leftSwipeView = nil;
+    }
+    self.rightSwipeButtons = @[];
+    self.leftSwipeButtons = @[];
+    
+    
+    self.isRefreshButton = !self.isRefreshButton;
 }
 
 #pragma mark -- 处理滑动手势
