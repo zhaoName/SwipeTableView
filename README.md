@@ -27,3 +27,4 @@
 创建左滑、右滑按钮只需传入文字、图片，按钮会根据文字和图片的大小自适应宽高。
 
 效果如下
+![image](https://github.com/zhaoName/SwipeTableView/blob/master/SwipeTableView.gif)
