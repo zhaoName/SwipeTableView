@@ -12,7 +12,7 @@
 #define WIDTH [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height
 
-@interface ViewController ()<UITableViewDelegate, UITableViewDataSource, SwipeTableViewDelegate>
+@interface ViewController ()<UITableViewDelegate, UITableViewDataSource, SwipeTableViewCellDelegate>
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) UITableView *tableView;
