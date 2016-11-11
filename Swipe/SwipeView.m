@@ -8,6 +8,7 @@
 
 #import "SwipeView.h"
 #import "SwipeButton.h"
+#import "SwipeTableCell.h"
 
 static inline CGFloat mgEaseLinear(CGFloat t, CGFloat b, CGFloat c) {
     return c*t + b;
@@ -61,7 +62,6 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 
 
-
 @interface SwipeView ()
 
 @property (nonatomic, strong) UIView *containView; /**< 装swipeButton的容器*/
@@ -109,7 +109,26 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
  */
 - (void)touchSwipeButton:(SwipeButton *)btn
 {
+    // 点击按钮隐藏滑动按钮，即将cell恢复原状
+    [self hideSwipeView];
+    // 点击按钮的回调事件
     btn.touchBlock();
+}
+
+- (void)hideSwipeView
+{
+    SwipeTableCell *cell = nil;
+    UIView *view = self.superview;
+    while (view != nil)
+    {
+        if([view isKindOfClass:[SwipeTableCell class]])
+        {
+            cell = (SwipeTableCell *)view;
+            break;
+        }
+        view = view.superview;
+    }
+    [cell hiddenSwipeAnimationAtCell:cell.hideSwipeViewWhenClickSwipeButton];
 }
 
 #pragma mark -- 动画效果

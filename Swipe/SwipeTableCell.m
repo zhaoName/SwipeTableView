@@ -78,6 +78,7 @@
     self.isAllowMultipleSwipe = NO;
     self.isShowSwipeOverlayView = NO;
     self.hideSwipeViewWhenScrollCell = YES;
+    self.hideSwipeViewWhenClickSwipeButton = YES;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
@@ -184,7 +185,6 @@
     if(self.leftSwipeButtons.count && !self.leftSwipeView)
     {
         _leftSwipeView = [[SwipeView alloc] initWithButtons:self.leftSwipeButtons fromRight:NO cellHeght:CELL_HEIGHT];
-        
         //改变leftSwipeView的frame 使其显示在swipeImageView的最左端
         _leftSwipeView.frame = CGRectMake(-_leftSwipeView.frame.size.width, 0, _leftSwipeView.frame.size.width, CELL_HEIGHT);
         [self.swipeOverlayView addSubview:_leftSwipeView];
@@ -243,12 +243,23 @@
 
 #pragma mark -- 处理手势动画效果
 
+/**
+ *  隐藏滑动按钮 即将cell恢复原状
+ *
+ *  @param isAnimation 是否隐藏
+ */
 - (void)hiddenSwipeAnimationAtCell:(BOOL)isAnimation
 {
     SwipeView *aView = self.swipeOffset < 0 ? self.rightSwipeView : self.leftSwipeView;
-    [self gestureAnimationWithOffset:0 animationView:aView];
+    [self gestureAnimationWithOffset:isAnimation ? 0 : self.swipeOffset animationView:aView];
 }
 
+/**
+ *  隐藏或显示滑动按钮的动画
+ *
+ *  @param offset        滑动按钮的偏移量
+ *  @param animationView 右滑或左滑View
+ */
 - (void)gestureAnimationWithOffset:(CGFloat)offset animationView:(SwipeView *)animationView
 {
     self.gestureAnimation = animationView;

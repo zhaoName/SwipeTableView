@@ -28,6 +28,7 @@ typedef NS_ENUM(NSUInteger, SwipeViewTransfromMode)
     SwipeViewTransfromMode3D, /**< 3D*/
 };
 
+
 @interface SwipeView : UIView
 
 @property (nonatomic, assign) CGFloat from;
@@ -40,7 +41,6 @@ typedef NS_ENUM(NSUInteger, SwipeViewTransfromMode)
 /**
  *  初始化swipeView，添加滑动按钮
  */
-
 - (instancetype)initWithButtons:(NSArray *)buttos fromRight:(BOOL)fromRight cellHeght:(CGFloat)cellHeight;
 
 /**

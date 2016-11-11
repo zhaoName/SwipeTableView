@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 
 @required
 /**
- *  设置cell的滑动按钮的样式 左滑、右滑、左滑右滑都有
+ *  设置cell的滑动按钮的样式 (左滑、右滑、左滑右滑都有)
  *
  *  @param indexPath cell的位置
  */
@@ -67,7 +67,16 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 
 @property (nonatomic, assign) SwipeViewTransfromMode transformMode; /**< swipeView的弹出效果*/
 @property (nonatomic, assign) BOOL hideSwipeViewWhenScrollCell; /**< 滚动cell时是否隐藏swipeView 默认YES*/
+@property (nonatomic, assign) BOOL hideSwipeViewWhenClickSwipeButton; /**< 点击按钮隐藏SwipeView 默认YES*/
 @property (nonatomic, assign) BOOL isRefreshButton;
+
+/**
+ *  隐藏滑动按钮 即将cell恢复原状
+ *
+ *  @param isAnimation 是否隐藏
+ */
+- (void)hiddenSwipeAnimationAtCell:(BOOL)isAnimation;
+
 
 - (void)refreshButtonsWithTitle:(NSString *)title;
 
