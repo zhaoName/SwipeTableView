@@ -11,3 +11,6 @@
 效果如下
 
 ![image](https://github.com/zhaoName/SwipeTableView/blob/master/SwipeTableView.gif)
+
+
+本文参考：https://github.com/MortimerGoro/MGSwipeTableCell
