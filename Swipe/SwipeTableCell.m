@@ -22,6 +22,7 @@
 @property (nonatomic, strong) SwipeView *gestureAnimation;
 
 @property (nonatomic, assign) SwipeTableCellStyle swipeStyle; /**< 滑动样式 默认右滑*/
+@property (nonatomic, assign) SwipeViewTransfromMode transformMode; /**< swipeView的弹出效果*/
 @property (nonatomic, strong) NSArray<SwipeButton *> *leftSwipeButtons; /**< 左滑buttons*/
 @property (nonatomic, strong) NSArray<SwipeButton *> *rightSwipeButtons; /**< 右滑buttons*/
 @property (nonatomic, strong) NSMutableSet *perviusHiddenViewSet;/**< 已经隐藏的view*/
@@ -86,7 +87,8 @@
     [self addGestureRecognizer:self.panGesture];
 }
 
-- (void)refreshButtonsWithTitle:(NSString *)title
+//更改滑动按钮的内容 如置顶变成取消置顶
+- (void)refreshButtoncontent
 {
     if(self.rightSwipeView)
     {
@@ -102,7 +104,8 @@
     self.leftSwipeButtons = @[];
     
     
-    self.isRefreshButton = !self.isRefreshButton;
+    [self getSwipeButtons];
+    [self createSwipeOverlayViewIfNeed];
 }
 
 #pragma mark -- 处理滑动手势
@@ -538,12 +541,14 @@
     _swipeOffset = swipeOffset;
     CGFloat offset = fabs(_swipeOffset);
     
-    if(!currentSwipeView || offset == 0){
+    if(!currentSwipeView || offset == 0)
+    {
         [self hiddenSwipeOverlayViewIfNeed];
         self.targetOffset = 0.0;
         return;
     }
-    else{
+    else
+    {
         [self showSwipeOverlayViewIfNeed];
         self.targetOffset = offset > currentSwipeView.bounds.size.width*self.swipeThreshold ? currentSwipeView.bounds.size.width*sign : 0;
     }

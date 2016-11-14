@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FEBCD5FA1DD957AB00F55318 /* TestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBCD5F91DD957AB00F55318 /* TestModel.m */; };
 		FEBE61861D73D8B70066D757 /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBE61851D73D8B70066D757 /* SwipeView.m */; };
 		FECCB0201D5C649D002FDD6C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB01F1D5C649D002FDD6C /* main.m */; };
 		FECCB0231D5C649D002FDD6C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FECCB0221D5C649D002FDD6C /* AppDelegate.m */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FEBCD5F81DD957AB00F55318 /* TestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestModel.h; sourceTree = "<group>"; };
+		FEBCD5F91DD957AB00F55318 /* TestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestModel.m; sourceTree = "<group>"; };
 		FEBE61841D73D8B70066D757 /* SwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeView.h; sourceTree = "<group>"; };
 		FEBE61851D73D8B70066D757 /* SwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeView.m; sourceTree = "<group>"; };
 		FECCB01B1D5C649D002FDD6C /* SwipeTableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeTableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,6 +75,8 @@
 				FECCB0221D5C649D002FDD6C /* AppDelegate.m */,
 				FECCB0241D5C649D002FDD6C /* ViewController.h */,
 				FECCB0251D5C649D002FDD6C /* ViewController.m */,
+				FEBCD5F81DD957AB00F55318 /* TestModel.h */,
+				FEBCD5F91DD957AB00F55318 /* TestModel.m */,
 				FECCB0271D5C649D002FDD6C /* Main.storyboard */,
 				FECCB02A1D5C649D002FDD6C /* Assets.xcassets */,
 				FECCB02C1D5C649D002FDD6C /* LaunchScreen.storyboard */,
@@ -179,6 +184,7 @@
 				FECCB03E1D5C65E5002FDD6C /* SwipeTableCell.m in Sources */,
 				FECCB0231D5C649D002FDD6C /* AppDelegate.m in Sources */,
 				FECCB0201D5C649D002FDD6C /* main.m in Sources */,
+				FEBCD5FA1DD957AB00F55318 /* TestModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,6 +18,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
     SwipeTableCellStyleBoth, /**< 左滑、右滑都有*/
 };
 
+@class SwipeTableCell;
 @protocol SwipeTableViewCellDelegate <NSObject>
 
 @required
@@ -49,6 +50,15 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 - (BOOL)tableView:(UITableView *)tableView hiddenSwipeViewWhenTapCellAtIndexpath:(NSIndexPath *)indexPath;
 
 /**
+ *  点击按钮隐藏SwipeView 默认YES
+ *
+ *  @param cell 按钮所在的cell
+ *
+ *  @return 是否隐藏
+ */
+- (BOOL)hideSwipeViewWhenClickSwipeButtonAtCell:(SwipeTableCell *)cell;
+
+/**
  *  设置swipeView的弹出样式
  */
 - (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath;
@@ -62,13 +72,12 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 @interface SwipeTableCell : UITableViewCell
 
 @property (nonatomic, weak) id<SwipeTableViewCellDelegate> swipeDelegate;
-@property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动*/
-@property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏按钮的临界值 范围:0-1，默认0.5*/
+@property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动 默认NO*/
+@property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏SwipeView的临界值 范围:0-1，默认0.5*/
 
-@property (nonatomic, assign) SwipeViewTransfromMode transformMode; /**< swipeView的弹出效果*/
 @property (nonatomic, assign) BOOL hideSwipeViewWhenScrollCell; /**< 滚动cell时是否隐藏swipeView 默认YES*/
 @property (nonatomic, assign) BOOL hideSwipeViewWhenClickSwipeButton; /**< 点击按钮隐藏SwipeView 默认YES*/
-@property (nonatomic, assign) BOOL isRefreshButton;
+
 
 /**
  *  隐藏滑动按钮 即将cell恢复原状
@@ -77,7 +86,9 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
  */
 - (void)hiddenSwipeAnimationAtCell:(BOOL)isAnimation;
 
-
-- (void)refreshButtonsWithTitle:(NSString *)title;
+/**
+ *  更改滑动按钮的内容 如置顶变成取消置顶
+ */
+- (void)refreshButtoncontent;
 
 @end

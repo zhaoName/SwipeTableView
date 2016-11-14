@@ -115,6 +115,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     btn.touchBlock();
 }
 
+/**
+ *  点击SwipeButton隐藏SwipeView，即将cell恢复原状
+ */
 - (void)hideSwipeView
 {
     SwipeTableCell *cell = nil;
@@ -127,6 +130,10 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             break;
         }
         view = view.superview;
+    }
+    if(cell.swipeDelegate && [cell.swipeDelegate respondsToSelector:@selector(hideSwipeViewWhenClickSwipeButtonAtCell:)])
+    {
+        cell.hideSwipeViewWhenClickSwipeButton = [cell.swipeDelegate hideSwipeViewWhenClickSwipeButtonAtCell:cell];
     }
     [cell hiddenSwipeAnimationAtCell:cell.hideSwipeViewWhenClickSwipeButton];
 }

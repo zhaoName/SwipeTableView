@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "SwipeTableCell.h"
+#import "TestModel.h"
 
 #define WIDTH [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -33,7 +34,10 @@
     
     for(int i=0; i<10; i++)
     {
-        [self.dataArray addObject:[NSString stringWithFormat:@"测试数据%10d", i+100]];
+        TestModel *teModel = [[TestModel alloc] init];
+        teModel.isRefreshButton = YES;
+        teModel.data = [NSString stringWithFormat:@"测试数据%10d", i+100];
+        [self.dataArray addObject:teModel];
     }
 }
 
@@ -60,7 +64,8 @@
     cell.swipeDelegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = self.dataArray[indexPath.row];
+    TestModel *model = self.dataArray[indexPath.row];
+    cell.textLabel.text = model.data;
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     
     return cell;
@@ -74,7 +79,7 @@
 
 #pragma mark -- SwipeTableViewDelegate
 
-//cell的滑动样式
+// cell的滑动样式
 - (SwipeTableCellStyle)tableView:(UITableView *)tableView styleOfSwipeButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0){
@@ -86,10 +91,12 @@
     else{
         return SwipeTableCellStyleLeftToRight;
     }
+    
+    //return [self.dataArray[indexPath.row] cellStyle];
 }
 
-//左滑buttons
-- (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView leftSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
+// 左滑buttons
+- (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView leftSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath 
 {
     SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithTitle:@"删除峰删除" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor redColor] image:[UIImage imageNamed:@"check"] touchBlock:^{
         
@@ -102,10 +109,12 @@
     return @[checkBtn, menuBtn];
 }
 
-//右滑buttons
+// 右滑buttons
 - (NSArray<SwipeButton *> *)tableView:(UITableView *)tableView rightSwipeButtonsAtIndexPath:(NSIndexPath *)indexPath
 {
-    //删除操作
+    __block SwipeTableCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    TestModel *model = self.dataArray[indexPath.row];
+    // 删除操作
     SwipeButton *checkBtn = [SwipeButton createSwipeButtonWithTitle:@"删除峰删除" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor redColor] image:[UIImage imageNamed:@"check"] touchBlock:^{
         
         //NSLog(@"%lu, %lu", indexPath.section, indexPath.row);
@@ -114,7 +123,10 @@
         NSLog(@"点击了check按钮");
     }];
     
-    SwipeButton *favBtn = [SwipeButton createSwipeButtonWithImage:[UIImage imageNamed:@"fav"] backgroundColor:[UIColor greenColor] touchBlock:^{
+    SwipeButton *favBtn = [SwipeButton createSwipeButtonWithTitle:model.isRefreshButton ? @"置顶" : @"取消置顶" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor greenColor] image:model.isRefreshButton ? [UIImage imageNamed:@"fav"]:[UIImage imageNamed:@"check"] touchBlock:^{
+        
+        model.isRefreshButton = !model.isRefreshButton;
+        [cell refreshButtoncontent];
         
         NSLog(@"点击了fav按钮");
     }];
@@ -135,7 +147,7 @@
     }
 }
 
-//swipeView的弹出样式 **也可以不实现协议方法 直接修改cell.transformMode**
+// swipeView的弹出样式
 - (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row < 3){
@@ -145,6 +157,8 @@
         return SwipeViewTransfromMode3D;
     }
     return SwipeViewTransfromModeDefault;
+    
+    //return [self.dataArray[indexPath.row] transformMode];
 }
 
 #pragma mark -- getter
