@@ -63,6 +63,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self initDatas];
 }
 
@@ -78,13 +79,42 @@
     self.swipeThreshold = 0.5;
     self.isAllowMultipleSwipe = NO;
     self.isShowSwipeOverlayView = NO;
-    self.hideSwipeViewWhenScrollCell = YES;
+    _hideSwipeViewWhenScrollTableView = YES;
     self.hideSwipeViewWhenClickSwipeButton = YES;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
     self.panGesture.delegate = self;
     [self addGestureRecognizer:self.panGesture];
+}
+
+/**
+ * 复用问题 
+ */
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    if(self.panGesture)
+    {
+        self.panGesture.delegate = nil;
+        [self removeGestureRecognizer:self.panGesture];
+        self.panGesture = nil;
+    }
+    if(self.swipeOverlayView)
+    {
+        [self.swipeOverlayView removeFromSuperview];
+        self.swipeOverlayView = nil;
+        _rightSwipeView = _leftSwipeView = nil;
+        self.rightSwipeButtons = @[];
+        self.leftSwipeButtons = @[];
+    }
+    if(self.dispalyLink)
+    {
+        [self.dispalyLink invalidate];
+        self.dispalyLink = nil;
+    }
+    [self initDatas];
 }
 
 //更改滑动按钮的内容 如置顶变成取消置顶
@@ -311,19 +341,20 @@
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    if(gestureRecognizer == self.panGesture)
+    if([gestureRecognizer isEqual:self.panGesture])
     {
         if(self.editing)  return NO; //tableView在编辑状态
         
         if(self.targetOffset != 0.0) return YES; //已经在滑动状态
         
-        //使UITableView可以滚动 解决滑动tableView和滑动cell冲突额问题
+        //使UITableView可以滚动 解决滑动tableView和滑动cell冲突的问题
         CGPoint panPoint = [self.panGesture translationInView:self];
         if(fabs(panPoint.x) < fabs(panPoint.y))
         {
             for(SwipeTableCell *cell in self.tableView.visibleCells) //滑动cell时，自动隐藏swipeView
             {
-                if(cell.hideSwipeViewWhenScrollCell && !cell.swipeOverlayView.hidden){
+                if(cell.hideSwipeViewWhenScrollTableView && !cell.swipeOverlayView.hidden)
+                {
                     [cell hiddenSwipeAnimationAtCell:YES];
                 }
             }

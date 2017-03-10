@@ -32,7 +32,7 @@
     self.tableView.showsVerticalScrollIndicator= NO;
     [self.view addSubview:self.tableView];
     
-    for(int i=0; i<10; i++)
+    for(int i=0; i<20; i++)
     {
         TestModel *teModel = [[TestModel alloc] init];
         teModel.isRefreshButton = YES;

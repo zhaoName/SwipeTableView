@@ -75,7 +75,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 @property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动 默认NO*/
 @property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏SwipeView的临界值 范围:0-1，默认0.5*/
 
-@property (nonatomic, assign) BOOL hideSwipeViewWhenScrollCell; /**< 滚动cell时是否隐藏swipeView 默认YES*/
+@property (nonatomic, assign, readonly) BOOL hideSwipeViewWhenScrollTableView; /**< 滚动TableView时是否隐藏swipeView 默认YES*/
 @property (nonatomic, assign) BOOL hideSwipeViewWhenClickSwipeButton; /**< 点击按钮隐藏SwipeView 默认YES*/
 
 
