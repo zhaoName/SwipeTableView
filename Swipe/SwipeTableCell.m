@@ -440,7 +440,7 @@
     return image;
 }
 
-/**< 删除所有子视图*/
+/** 删除所有子视图*/
 - (void)removeAllSubViewsAtView:(UIView *)view
 {
     while (view.subviews.count) {
