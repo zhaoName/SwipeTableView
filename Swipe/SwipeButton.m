@@ -47,9 +47,9 @@
     [button setImage:image forState:UIControlStateNormal];
     button.touchBlock = block;
     
-    //算出文字的size
+    // 算出文字的size
     CGSize titleSize = [title boundingRectWithSize:CGSizeMake(MAXFLOAT, button.titleLabel.frame.size.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:font]} context:nil].size;
-    //button的宽度去文字和图片两个中的最大宽度 其它值将在SwipeView中设置
+    // button的宽度去文字和图片两个中的最大宽度 其它值将在SwipeView中设置
     button.frame = CGRectMake(0, 0, MAX(titleSize.width+10, image.size.width+10), 0);
     if(!NULL_STRING(title) && !image)
     {

@@ -140,7 +140,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 #pragma mark -- 动画效果
 
-//手势动画效果
+// 手势动画效果
 -(CGFloat)value:(CGFloat)elapsed duration:(CGFloat)duration from:(CGFloat)from to:(CGFloat)to
 {
     CGFloat t = MIN(elapsed/duration, 1.0f);
@@ -150,10 +150,10 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     CGFloat (*easingFunction)(CGFloat t, CGFloat b, CGFloat c) = 0;
     switch (_easingFunction) {
         case MGSwipeEasingFunctionLinear: easingFunction = mgEaseLinear; break;
-        case MGSwipeEasingFunctionQuadIn: easingFunction = mgEaseInQuad;;break;
-        case MGSwipeEasingFunctionQuadOut: easingFunction = mgEaseOutQuad;;break;
-        case MGSwipeEasingFunctionQuadInOut: easingFunction = mgEaseInOutQuad;break;
-        case MGSwipeEasingFunctionCubicIn: easingFunction = mgEaseInCubic;break;
+        case MGSwipeEasingFunctionQuadIn: easingFunction = mgEaseInQuad; break;
+        case MGSwipeEasingFunctionQuadOut: easingFunction = mgEaseOutQuad; break;
+        case MGSwipeEasingFunctionQuadInOut: easingFunction = mgEaseInOutQuad; break;
+        case MGSwipeEasingFunctionCubicIn: easingFunction = mgEaseInCubic; break;
         default:
         case MGSwipeEasingFunctionCubicOut: easingFunction = mgEaseOutCubic;break;
         case MGSwipeEasingFunctionCubicInOut: easingFunction = mgEaseInOutCubic;break;
@@ -164,13 +164,26 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     return (*easingFunction)(t, from, to - from);
 }
 
-//swipeView的弹出动画效果
+// swipeView的弹出动画效果
 - (void)swipeViewAnimationFromRight:(BOOL)fromRight effect:(CGFloat)t cellHeight:(CGFloat)cellHeight
 {
     switch (self.mode)
     {
-        case SwipeViewTransfromModeDefault:break; //默认的效果
-        case SwipeViewTransfromModeBorder: //渐出
+        case SwipeViewTransfromModeDefault:break; // 默认的效果
+        case SwipeViewTransfromModeStatic:
+        {
+            const CGFloat dx = self.bounds.size.width * (1.0 - t);
+            CGFloat offsetX = 0;
+            
+            for (UIView *button in self.buttonArray) {
+                CGRect frame = button.frame;
+                frame.origin.x = offsetX + (fromRight ? -dx : dx);
+                button.frame = frame;
+                offsetX += frame.size.width;
+            }
+        }
+            break;
+        case SwipeViewTransfromModeBorder: // 渐出
         {
             CGFloat selfWidth = self.bounds.size.width;
             CGFloat offsetX = 0;
@@ -183,8 +196,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
                 offsetX += MAX(frame.size.width, cellHeight);
             }
         }
-            break;;
-        case SwipeViewTransfromMode3D: //3D
+            break;
+        case SwipeViewTransfromMode3D: // 3D
         {
             const CGFloat invert = fromRight ? -1.0 : 1.0;
             const CGFloat angle = M_PI_2 * (1.0 - t) * invert;

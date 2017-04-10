@@ -150,7 +150,11 @@
 // swipeView的弹出样式
 - (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row < 3){
+    if(indexPath.row == 0)
+    {
+        return SwipeViewTransfromModeStatic;
+    }
+    else if(indexPath.row < 3){
         return  SwipeViewTransfromModeBorder;
     }
     else if (indexPath.row > 7){

@@ -24,8 +24,9 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 typedef NS_ENUM(NSUInteger, SwipeViewTransfromMode)
 {
     SwipeViewTransfromModeDefault = 0, /**< 默认效果，拖拽*/
-    SwipeViewTransfromModeBorder, /**< 渐出*/
-    SwipeViewTransfromMode3D, /**< 3D*/
+    SwipeViewTransfromModeStatic, /**< 静态效果*/
+    SwipeViewTransfromModeBorder, /**< 渐出效果*/
+    SwipeViewTransfromMode3D, /**< 3D效果*/
 };
 
 
@@ -51,7 +52,7 @@ typedef NS_ENUM(NSUInteger, SwipeViewTransfromMode)
 /**
  *  swipeView的弹出、隐藏动画
  *
- *  @param fromRight  右滑
+ *  @param fromRight  是否是右滑
  *  @param t          动画控制量
  *  @param cellHeight cell的高度
  */

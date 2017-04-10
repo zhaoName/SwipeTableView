@@ -584,16 +584,16 @@
         self.targetOffset = offset > currentSwipeView.bounds.size.width*self.swipeThreshold ? currentSwipeView.bounds.size.width*sign : 0;
     }
     //NSLog(@"self.swipeOffset:%f", self.swipeOffset);
-    //平移swipeImageView，显示滑动后cell的内容
+    // 平移swipeImageView，显示滑动后cell的内容
     self.swipeImageView.transform = CGAffineTransformMakeTranslation(self.swipeOffset, 0);
     
     SwipeView *viewArray[2] = {self.rightSwipeView, self.leftSwipeView};
-     for (int i = 0; i< 2; i++)
+    for (int i = 0; i< 2; i++)
     {
         SwipeView *swipeView = viewArray[i];
         if(!swipeView) continue;
         
-        //平移显示按钮
+        // 平移显示按钮
         CGFloat translation = MIN(offset, currentSwipeView.bounds.size.width)*sign;
         swipeView.transform = CGAffineTransformMakeTranslation(translation, 0);
         if(currentSwipeView != swipeView) continue;
@@ -601,7 +601,7 @@
         [self getSwipeViewTransformMode];
         currentSwipeView.mode = self.transformMode;
         CGFloat t = MIN(1.0f, offset/currentSwipeView.bounds.size.width);
-        //swipeView的弹出、隐藏动画效果
+        // swipeView的弹出、隐藏动画效果
         [currentSwipeView swipeViewAnimationFromRight:self.swipeOffset<0 ? YES : NO effect:t cellHeight:CELL_HEIGHT];
     }
 }
