@@ -117,6 +117,24 @@
     [self initDatas];
 }
 
+// 若点击区域在tableView上 而不在cell上，滑动时也会自动隐藏swipeView
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *view = [super hitTest:point withEvent:event];
+    
+    if (!view)
+    {
+        for(SwipeTableCell *cell in self.tableView.visibleCells) // 滑动cell时，自动隐藏swipeView
+        {
+            if(cell.hideSwipeViewWhenScrollTableView && !cell.swipeOverlayView.hidden)
+            {
+                [cell hiddenSwipeAnimationAtCell:YES];
+            }
+        }
+    }
+    return view;
+}
+
 //更改滑动按钮的内容 如置顶变成取消置顶
 - (void)refreshButtoncontent
 {
