@@ -62,6 +62,7 @@
     }
     
     cell.swipeDelegate = self;
+    if (indexPath.row == 0) cell.swipeOverlayViewBackgroundColor = [UIColor grayColor];
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     TestModel *model = self.dataArray[indexPath.row];
@@ -163,6 +164,15 @@
     return SwipeViewTransfromModeDefault;
     
     //return [self.dataArray[indexPath.row] transformMode];
+}
+
+// swipeButton 距上左下右的间距  注意不能刚给负值
+- (UIEdgeInsets)tableView:(UITableView *)tableView swipeButtonEdgeAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0) {
+        return UIEdgeInsetsMake(5, 5, 5, 5);
+    }
+    return UIEdgeInsetsZero;
 }
 
 #pragma mark -- getter

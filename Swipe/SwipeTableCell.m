@@ -19,7 +19,7 @@
 @property (nonatomic, strong) UIImageView *swipeImageView; /**< 显示移动后的cell上的内容*/
 @property (nonatomic, strong) SwipeView *rightSwipeView; /**< 右滑展示的view*/
 @property (nonatomic, strong) SwipeView *leftSwipeView; /**< 左滑展示的View*/
-@property (nonatomic, strong) SwipeView *gestureAnimation;
+@property (nonatomic, strong) SwipeView *gestureAnimationSwipeView;
 
 @property (nonatomic, assign) SwipeTableCellStyle swipeStyle; /**< 滑动样式 默认右滑*/
 @property (nonatomic, assign) SwipeViewTransfromMode transformMode; /**< swipeView的弹出效果*/
@@ -81,6 +81,7 @@
     self.isShowSwipeOverlayView = NO;
     _hideSwipeViewWhenScrollTableView = YES;
     self.hideSwipeViewWhenClickSwipeButton = YES;
+    self.swipeOverlayViewBackgroundColor = [UIColor clearColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
@@ -170,7 +171,7 @@
         self.panStartOffset = self.swipeOffset;
         
         [self createSwipeOverlayViewIfNeed];
-        //不允许多个cell同时能滑动，则移除上一个cell的滑动手势
+        // 不允许多个cell同时能滑动，则移除上一个cell的滑动手势
         if(!_isAllowMultipleSwipe)
         {
             for(SwipeTableCell * cell in self.tableView.visibleCells)
@@ -182,19 +183,19 @@
     else if(pan.state == UIGestureRecognizerStateChanged)
     {
         CGFloat offset = self.panStartOffset + currentPanPoint.x - self.panStartPoint.x;
-        //重新swipeOffset的setter方法，监测滑动偏移量
+        // 重新swipeOffset的setter方法，监测滑动偏移量
         self.swipeOffset = [self filterSwipeOffset:offset];
     }
     else if(pan.state == UIGestureRecognizerStateEnded)
     {
         CGFloat velocity = [self.panGesture velocityInView:self].x;
-        CGFloat inertiaThreshold = 100; //每秒走过多少像素
+        CGFloat inertiaThreshold = 100; // 每秒走过多少像素
         
-        if(velocity > inertiaThreshold) //快速左滑
+        if(velocity > inertiaThreshold) // 快速左滑
         {
             self.targetOffset = self.swipeOffset < 0 ? 0 : (self.leftSwipeView ? self.leftSwipeView.frame.size.width : self.targetOffset);
         }
-        else if(velocity < -inertiaThreshold) //快速右滑
+        else if(velocity < -inertiaThreshold) // 快速右滑
         {
             self.targetOffset = self.swipeOffset > 0 ? 0 : (self.rightSwipeView ? -self.rightSwipeView.frame.size.width : self.targetOffset);
         }
@@ -206,7 +207,7 @@
 }
 
 /**
- *  创建用于显示滑动过后cell内容的SwipeImageView, 并在其上添加滑动按钮
+ * 创建用于显示滑动过后cell内容的SwipeImageView, 并在其上添加滑动按钮
  */
 - (void)createSwipeOverlayViewIfNeed
 {
@@ -216,7 +217,7 @@
     if(!self.swipeOverlayView)
     {
         _swipeOverlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CELL_WIDTH, CELL_HEIGHT)];
-        _swipeOverlayView.backgroundColor = [UIColor clearColor];
+        _swipeOverlayView.backgroundColor = self.swipeOverlayViewBackgroundColor;
         _swipeOverlayView.hidden = YES;
         
         _swipeImageView = [[UIImageView alloc] initWithFrame:self.swipeOverlayView.bounds];
@@ -226,17 +227,21 @@
         [self addSubview:self.swipeOverlayView];
     }
 
+    UIEdgeInsets edge = UIEdgeInsetsZero;
+    if ([self.swipeDelegate respondsToSelector:@selector(tableView:swipeButtonEdgeAtIndexPath:)]) {
+        edge = [self.swipeDelegate tableView:self.tableView swipeButtonEdgeAtIndexPath:[self.tableView indexPathForCell:self]];
+    }
     if(self.rightSwipeButtons.count && !self.rightSwipeView)
     {
-        _rightSwipeView = [[SwipeView alloc] initWithButtons:self.rightSwipeButtons fromRight:YES cellHeght:CELL_HEIGHT];
-        //改变rightSwipeView的frame 使其显示在swipeImageView的最右端
+        _rightSwipeView = [[SwipeView alloc] initWithButtons:self.rightSwipeButtons fromRight:YES cellHeght:CELL_HEIGHT edge:edge];
+        // 改变rightSwipeView的frame 使其显示在swipeImageView的最右端
         _rightSwipeView.frame = CGRectMake(self.swipeImageView.bounds.size.width, 0, _rightSwipeView.frame.size.width, CELL_HEIGHT);
         [self.swipeOverlayView addSubview:_rightSwipeView];
     }
     if(self.leftSwipeButtons.count && !self.leftSwipeView)
     {
-        _leftSwipeView = [[SwipeView alloc] initWithButtons:self.leftSwipeButtons fromRight:NO cellHeght:CELL_HEIGHT];
-        //改变leftSwipeView的frame 使其显示在swipeImageView的最左端
+        _leftSwipeView = [[SwipeView alloc] initWithButtons:self.leftSwipeButtons fromRight:NO cellHeght:CELL_HEIGHT edge:edge];
+        // 改变leftSwipeView的frame 使其显示在swipeImageView的最左端
         _leftSwipeView.frame = CGRectMake(-_leftSwipeView.frame.size.width, 0, _leftSwipeView.frame.size.width, CELL_HEIGHT);
         [self.swipeOverlayView addSubview:_leftSwipeView];
     }
@@ -270,7 +275,7 @@
 {
     self.panGesture.enabled = NO;
     self.panGesture.enabled = YES;
-    //将上一个cell恢复原状
+    // 将上一个cell恢复原状
     if(self.swipeOffset){
         [self hiddenSwipeAnimationAtCell:YES];
     }
@@ -283,7 +288,7 @@
     BOOL hidden = YES;
     if([self.swipeDelegate respondsToSelector:@selector(tableView:hiddenSwipeViewWhenTapCellAtIndexpath:)])
     {
-        //判断点击cell是否隐藏swipeView
+        // 判断点击cell是否隐藏swipeView
         hidden = [self.swipeDelegate tableView:self.tableView hiddenSwipeViewWhenTapCellAtIndexpath:[self.tableView indexPathForCell:self]];
     }
     if(hidden)
@@ -313,7 +318,7 @@
  */
 - (void)gestureAnimationWithOffset:(CGFloat)offset animationView:(SwipeView *)animationView
 {
-    self.gestureAnimation = animationView;
+    self.gestureAnimationSwipeView = animationView;
     if(self.dispalyLink){
         [self.dispalyLink invalidate];
         self.dispalyLink = nil;
@@ -323,14 +328,14 @@
         [self createSwipeOverlayViewIfNeed];
     }
     
-    if(!self.gestureAnimation){
+    if(!self.gestureAnimationSwipeView){
         self.swipeOffset = offset;
         return;
     }
     
-    self.gestureAnimation.from = self.swipeOffset;
-    self.gestureAnimation.to = offset;
-    self.gestureAnimation.start = 0;
+    self.gestureAnimationSwipeView.from = self.swipeOffset;
+    self.gestureAnimationSwipeView.to = offset;
+    self.gestureAnimationSwipeView.start = 0;
     self.dispalyLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleAnimation:)];
     [self.dispalyLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 }
@@ -340,15 +345,15 @@
  */
 - (void)handleAnimation:(CADisplayLink *)link
 {
-    if (!self.gestureAnimation.start) {
-        self.gestureAnimation.start = link.timestamp;
+    if (!self.gestureAnimationSwipeView.start) {
+        self.gestureAnimationSwipeView.start = link.timestamp;
     }
     
-    CFTimeInterval elapsed = link.timestamp - self.gestureAnimation.start;
+    CFTimeInterval elapsed = link.timestamp - self.gestureAnimationSwipeView.start;
     //滑动超过SwipeView的一半 自动显示或隐藏全部内容
-    self.swipeOffset = [self.gestureAnimation value:elapsed duration:self.gestureAnimation.duration from:self.gestureAnimation.from to:self.gestureAnimation.to];
+    self.swipeOffset = [self.gestureAnimationSwipeView value:elapsed duration:self.gestureAnimationSwipeView.duration from:self.gestureAnimationSwipeView.from to:self.gestureAnimationSwipeView.to];
     
-    if(elapsed >= self.gestureAnimation.duration)
+    if(elapsed >= self.gestureAnimationSwipeView.duration)
     {
         [link invalidate];
         self.dispalyLink = nil;
@@ -361,15 +366,15 @@
 {
     if([gestureRecognizer isEqual:self.panGesture])
     {
-        if(self.editing)  return NO; //tableView在编辑状态
+        if(self.editing)  return NO; // tableView在编辑状态
         
-        if(self.targetOffset != 0.0) return YES; //已经在滑动状态
+        if(self.targetOffset != 0.0) return YES; // 已经在滑动状态
         
-        //使UITableView可以滚动 解决滑动tableView和滑动cell冲突的问题
+        // 使UITableView可以滚动 解决滑动tableView和滑动cell冲突的问题
         CGPoint panPoint = [self.panGesture translationInView:self];
         if(fabs(panPoint.x) < fabs(panPoint.y))
         {
-            for(SwipeTableCell *cell in self.tableView.visibleCells) //滑动cell时，自动隐藏swipeView
+            for(SwipeTableCell *cell in self.tableView.visibleCells) // 滑动cell时，自动隐藏swipeView
             {
                 if(cell.hideSwipeViewWhenScrollTableView && !cell.swipeOverlayView.hidden)
                 {
@@ -475,18 +480,18 @@
     if(self.isShowSwipeOverlayView) return;
     self.isShowSwipeOverlayView = YES;
     
-    //去除cell的选中状态，并保存
+    // 去除cell的选中状态，并保存
     self.selected = NO;
     self.previousSelectStyle = self.selectionStyle;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    //显示swipeOverlayView,并将移动后cell上的内容裁剪到swipeImageView上
+    // 显示swipeOverlayView,并将移动后cell上的内容裁剪到swipeImageView上
     self.swipeImageView.image = [self fecthTranslatedCellInfo:self];
     self.swipeOverlayView.hidden = NO;
     
-    //隐藏cell上的内容
+    // 隐藏cell上的内容
     [self hiddenAccesoryViewAndContentOfCellIfNeed:YES];
-    //添加点击手势
+    // 添加点击手势
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     self.tapGesture.delegate = self;
     [self.swipeImageView addGestureRecognizer:self.tapGesture];
@@ -500,11 +505,11 @@
     if(!self.isShowSwipeOverlayView) return;
     self.isShowSwipeOverlayView = NO;
     
-    //隐藏swipeImageView
+    // 隐藏swipeImageView
     self.swipeOverlayView.hidden = YES;
     self.swipeImageView.image = nil;
     
-    //若cell是选中状态 则滑动手势结束后还原cell的选中状态
+    // 若cell是选中状态 则滑动手势结束后还原cell的选中状态
     self.selectionStyle = self.previousSelectStyle;
     NSArray *selectCells = self.tableView.indexPathsForSelectedRows;
     if([selectCells containsObject:[self.tableView indexPathForCell:self]])
@@ -513,9 +518,9 @@
         self.selected = YES;
     }
     
-    //将cell上的内容还原
+    // 将cell上的内容还原
     [self hiddenAccesoryViewAndContentOfCellIfNeed:NO];
-    //移除点击手势
+    // 移除点击手势
     if(self.tapGesture){
         [self.swipeImageView removeGestureRecognizer:self.tapGesture];
         self.tapGesture = nil;
@@ -527,12 +532,12 @@
  */
 - (void)hiddenAccesoryViewAndContentOfCellIfNeed:(BOOL)hidden
 {
-    //若只设置self.accessoryType 则不走这个判断语句
+    // 若只设置self.accessoryType 则不走这个判断语句
     if(self.accessoryView){
         self.accessoryView.hidden = hidden;
     }
     
-    //设置了self.accessoryType 其实是个UIButton
+    // 设置了self.accessoryType 其实是个UIButton
     for(UIView *subView in self.contentView.superview.subviews)
     {
         if(subView != self.contentView && ([subView isKindOfClass:[UIButton class]] || [NSStringFromClass(subView.class) rangeOfString:@"Disclosure"].location != NSNotFound))
@@ -543,13 +548,13 @@
     
     for(UIView *subView in self.contentView.subviews)
     {
-        //若是cell上的subView则隐藏
+        // 若是cell上的subView则隐藏
         if(hidden && !subView.hidden)
         {
             subView.hidden = YES;
             [self.perviusHiddenViewSet addObject:subView];
         }
-        //还原cell时，将隐藏的cell上的内容显示出来
+        // 还原cell时，将隐藏的cell上的内容显示出来
         else if(!hidden && [self.perviusHiddenViewSet containsObject:subView])
         {
             subView.hidden = NO;
@@ -568,7 +573,7 @@
     if(_tableView){
         return _tableView;
     }
-    //获取当前cell所在的父tableView
+    // 获取当前cell所在的父tableView
     UIView *view = self.superview;
     while (view != nil)
     {

@@ -59,19 +59,25 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 - (BOOL)hideSwipeViewWhenClickSwipeButtonAtCell:(SwipeTableCell *)cell;
 
 /**
- *  设置swipeView的弹出样式
+ * 设置swipeView的弹出样式
  */
 - (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ * 设置swipeButton 距上左下右的间距
+ *
+ * @warn 值要>0 否则可能导致显示不全
+ */
+- (UIEdgeInsets)tableView:(UITableView *)tableView swipeButtonEdgeAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
-
-
 
 
 @class SwipeTableViewDelegate;
 @interface SwipeTableCell : UITableViewCell
 
 @property (nonatomic, weak) id<SwipeTableViewCellDelegate> swipeDelegate;
+@property (nonatomic, strong) UIColor *swipeOverlayViewBackgroundColor; /**< swipeButton下的背景色 默认透明色*/
 @property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动 默认NO*/
 @property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏SwipeView的临界值 范围:0-1，默认0.5*/
 

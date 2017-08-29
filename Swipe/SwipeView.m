@@ -66,38 +66,44 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 @property (nonatomic, strong) UIView *containView; /**< 装swipeButton的容器*/
 @property (nonatomic, strong) NSArray *buttonArray; /**< 重新排序后的buttons*/
+@property (nonatomic, assign) UIEdgeInsets btnEdge; /**< swipeBtn间距*/
 
 @end
 
 @implementation SwipeView
 
-- (instancetype)initWithButtons:(NSArray *)buttos fromRight:(BOOL)fromRight cellHeght:(CGFloat)cellHeight
+- (instancetype)initWithButtons:(NSArray *)buttos fromRight:(BOOL)fromRight cellHeght:(CGFloat)cellHeight edge:(UIEdgeInsets)edge
 {
     CGFloat containerWidth = 0;
-    //计算buttons的总宽度
+    CGFloat horizontalSpace = ABS(edge.left) + ABS(edge.right);
+    CGFloat verticalSpace = ABS(edge.top) + ABS(edge.bottom);
+    // 计算buttons的总宽度
     for(SwipeButton *button in buttos){
-        containerWidth += MAX(button.frame.size.width, cellHeight);
+        containerWidth += MAX(button.frame.size.width, cellHeight - verticalSpace);
     }
+    // 加上左右间距
+    containerWidth += horizontalSpace;
     
-    if([super initWithFrame:CGRectMake(0, 0, containerWidth, cellHeight)])
+    if([super initWithFrame:CGRectMake(0, 0, containerWidth, cellHeight - verticalSpace)])
     {
-        
+        self.btnEdge = edge;
         self.duration = 0.3;
         self.easingFunction = MGSwipeEasingFunctionCubicOut;
+        self.containView.frame = CGRectMake(0, ABS(edge.top), containerWidth, cellHeight - verticalSpace);
         
-        //若是右滑 则倒序。即将数组的最后一个元素放在swipeView的最后
+        // 若是右滑 则倒序。即将数组的最后一个元素放在swipeView的最后
         self.buttonArray = fromRight ? [[buttos reverseObjectEnumerator] allObjects] : buttos;
         [self addSubview:self.containView];
         
-        CGFloat offset = 0.0;
+        CGFloat offset = ABS(edge.left);
         for(SwipeButton *button in self.buttonArray)
         {
-            button.frame = CGRectMake(offset, 0, MAX(button.frame.size.width, cellHeight), cellHeight);
+            button.frame = CGRectMake(offset, 0, MAX(button.frame.size.width, cellHeight - verticalSpace), cellHeight - verticalSpace);
             offset += button.frame.size.width;
-            //防止重用问题，移除点击事件
+            // 防止重用问题，移除点击事件
             [button removeTarget:self action:@selector(touchSwipeButton:) forControlEvents:UIControlEventTouchUpInside];
             [button addTarget:self action:@selector(touchSwipeButton:) forControlEvents:UIControlEventTouchUpInside];
-            //直接用addSubview会覆盖左滑的动画效果
+            // 直接用addSubview会覆盖左滑的动画效果
             [self.containView insertSubview:button atIndex:fromRight ? self.containView.subviews.count : 0];
         }
     }
@@ -105,7 +111,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 }
 
 /**
- *  点击滑动按钮的响应事件
+ * 点击滑动按钮的响应事件
  */
 - (void)touchSwipeButton:(SwipeButton *)btn
 {
@@ -116,7 +122,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 }
 
 /**
- *  点击SwipeButton隐藏SwipeView，即将cell恢复原状
+ * 点击SwipeButton隐藏SwipeView，即将cell恢复原状
  */
 - (void)hideSwipeView
 {
@@ -167,13 +173,14 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 // swipeView的弹出动画效果
 - (void)swipeViewAnimationFromRight:(BOOL)fromRight effect:(CGFloat)t cellHeight:(CGFloat)cellHeight
 {
+    CGFloat verticalSpace = self.btnEdge.top + self.btnEdge.bottom;
     switch (self.mode)
     {
         case SwipeViewTransfromModeDefault:break; // 默认的效果
         case SwipeViewTransfromModeStatic:
         {
             const CGFloat dx = self.bounds.size.width * (1.0 - t);
-            CGFloat offsetX = 0;
+            CGFloat offsetX = ABS(self.btnEdge.left);
             
             for (UIView *button in self.buttonArray) {
                 CGRect frame = button.frame;
@@ -186,14 +193,14 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         case SwipeViewTransfromModeBorder: // 渐出
         {
             CGFloat selfWidth = self.bounds.size.width;
-            CGFloat offsetX = 0;
+            CGFloat offsetX = ABS(self.btnEdge.left);
             
             for (SwipeButton *button in self.buttonArray)
             {
                 CGRect frame = button.frame;
-                CGFloat x = fromRight ? offsetX * t :(selfWidth - MAX(frame.size.width, cellHeight) - offsetX) * (1.0 - t) + offsetX;
-                button.frame = CGRectMake(x, 0,  MAX(frame.size.width, cellHeight), cellHeight);
-                offsetX += MAX(frame.size.width, cellHeight);
+                CGFloat x = fromRight ? offsetX * t : (selfWidth - MAX(frame.size.width, cellHeight - verticalSpace) - offsetX) * (1.0 - t) + offsetX;
+                button.frame = CGRectMake(x, 0,  MAX(frame.size.width, cellHeight - verticalSpace), cellHeight - verticalSpace);
+                offsetX += MAX(frame.size.width, cellHeight - verticalSpace);
             }
         }
             break;

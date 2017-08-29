@@ -42,7 +42,7 @@ typedef NS_ENUM(NSUInteger, SwipeViewTransfromMode)
 /**
  *  初始化swipeView，添加滑动按钮
  */
-- (instancetype)initWithButtons:(NSArray *)buttos fromRight:(BOOL)fromRight cellHeght:(CGFloat)cellHeight;
+- (instancetype)initWithButtons:(NSArray *)buttos fromRight:(BOOL)fromRight cellHeght:(CGFloat)cellHeight edge:(UIEdgeInsets)edge;
 
 /**
  *  滑动手势滑动的距离超过swipeView的一半时，会自动显示或隐藏swipeView
