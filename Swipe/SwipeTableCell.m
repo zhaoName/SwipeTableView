@@ -136,7 +136,7 @@
     return view;
 }
 
-//更改滑动按钮的内容 如置顶变成取消置顶
+// 更改滑动按钮的内容 如置顶变成取消置顶
 - (void)refreshButtoncontent
 {
     if(self.rightSwipeView)
@@ -221,12 +221,13 @@
         _swipeOverlayView.hidden = YES;
         
         _swipeImageView = [[UIImageView alloc] initWithFrame:self.swipeOverlayView.bounds];
-        _swipeImageView.userInteractionEnabled = YES;
+//        _swipeImageView.userInteractionEnabled = YES;
         
         [_swipeOverlayView addSubview:_swipeImageView];
-        [self addSubview:self.swipeOverlayView];
+        [self.contentView addSubview:self.swipeOverlayView];
     }
-
+    
+    // 获取swipeButton距swipeTableView上左下右的距离
     UIEdgeInsets edge = UIEdgeInsetsZero;
     if ([self.swipeDelegate respondsToSelector:@selector(tableView:swipeButtonEdgeAtIndexPath:)]) {
         edge = [self.swipeDelegate tableView:self.tableView swipeButtonEdgeAtIndexPath:[self.tableView indexPathForCell:self]];
@@ -487,6 +488,7 @@
     
     // 显示swipeOverlayView,并将移动后cell上的内容裁剪到swipeImageView上
     self.swipeImageView.image = [self fecthTranslatedCellInfo:self];
+    self.swipeImageView.userInteractionEnabled = YES;
     self.swipeOverlayView.hidden = NO;
     
     // 隐藏cell上的内容
@@ -546,8 +548,9 @@
         }
     }
     
-    for(UIView *subView in self.contentView.subviews)
+    for(UIView *subView in self.contentView.superview.subviews)
     {
+        if (subView == self.contentView) continue;
         // 若是cell上的subView则隐藏
         if(hidden && !subView.hidden)
         {

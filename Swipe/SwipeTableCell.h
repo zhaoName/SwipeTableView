@@ -64,7 +64,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 - (SwipeViewTransfromMode)tableView:(UITableView *)tableView swipeViewTransformModeAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
- * 设置swipeButton 距上左下右的间距
+ * 设置swipeButton 距SwipeTableCell上左下右的间距
  *
  * @warn 值要>0 否则可能导致显示不全
  */
