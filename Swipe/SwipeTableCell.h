@@ -10,7 +10,6 @@
 #import "SwipeButton.h"
 #import "SwipeView.h"
 
-
 typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 {
     SwipeTableCellStyleRightToLeft = 0, /**< 右滑*/
@@ -47,7 +46,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 /**
  *  当滑动手势结束后，点击cell是否隐藏swipeView，即cell自动回复到最初状态。默认YES
  */
-- (BOOL)tableView:(UITableView *)tableView hiddenSwipeViewWhenTapCellAtIndexpath:(NSIndexPath *)indexPath;
+- (BOOL)tableView:(UITableView *)tableView hiddenSwipeViewWhenTapCellAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  点击按钮隐藏SwipeView 默认YES
@@ -79,7 +78,7 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 @property (nonatomic, weak) id<SwipeTableViewCellDelegate> swipeDelegate;
 @property (nonatomic, strong) UIColor *swipeOverlayViewBackgroundColor; /**< swipeButton下的背景色 默认透明色*/
 @property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动 默认NO*/
-@property (nonatomic, assign) CGFloat swipeThreshold;/**< 当结束滑动手势时，显示或隐藏SwipeView的临界值 范围:0-1，默认0.5*/
+@property (nonatomic, assign) CGFloat swipeThreshold; /**< 当结束滑动手势时，显示或隐藏SwipeView的临界值 范围:0-1，默认0.5*/
 
 @property (nonatomic, assign, readonly) BOOL hideSwipeViewWhenScrollTableView; /**< 滚动TableView时是否隐藏swipeView 默认YES*/
 @property (nonatomic, assign) BOOL hideSwipeViewWhenClickSwipeButton; /**< 点击按钮隐藏SwipeView 默认YES*/
@@ -95,6 +94,6 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 /**
  *  更改滑动按钮的内容 如置顶变成取消置顶
  */
-- (void)refreshButtoncontent;
+- (void)refreshButtonContent;
 
 @end

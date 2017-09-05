@@ -137,7 +137,7 @@
 }
 
 // 更改滑动按钮的内容 如置顶变成取消置顶
-- (void)refreshButtoncontent
+- (void)refreshButtonContent
 {
     if(self.rightSwipeView)
     {
@@ -287,10 +287,10 @@
 - (void)handleTapGesture:(UITapGestureRecognizer *)tapGesture
 {
     BOOL hidden = YES;
-    if([self.swipeDelegate respondsToSelector:@selector(tableView:hiddenSwipeViewWhenTapCellAtIndexpath:)])
+    if([self.swipeDelegate respondsToSelector:@selector(tableView:hiddenSwipeViewWhenTapCellAtIndexPath:)])
     {
         // 判断点击cell是否隐藏swipeView
-        hidden = [self.swipeDelegate tableView:self.tableView hiddenSwipeViewWhenTapCellAtIndexpath:[self.tableView indexPathForCell:self]];
+        hidden = [self.swipeDelegate tableView:self.tableView hiddenSwipeViewWhenTapCellAtIndexPath:[self.tableView indexPathForCell:self]];
     }
     if(hidden)
     {

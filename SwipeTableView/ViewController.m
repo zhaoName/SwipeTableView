@@ -127,7 +127,7 @@
     SwipeButton *favBtn = [SwipeButton createSwipeButtonWithTitle:model.isRefreshButton ? @"置顶" : @"取消置顶" font:16 textColor:[UIColor blackColor] backgroundColor:[UIColor greenColor] image:model.isRefreshButton ? [UIImage imageNamed:@"fav"]:[UIImage imageNamed:@"check"] touchBlock:^{
         
         model.isRefreshButton = !model.isRefreshButton;
-        [cell refreshButtoncontent];
+        [cell refreshButtonContent];
         
         NSLog(@"点击了fav按钮");
     }];
