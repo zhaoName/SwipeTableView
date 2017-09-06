@@ -84,6 +84,9 @@
     self.swipeOverlayViewBackgroundColor = [UIColor clearColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    self.isAllowExpand = NO;
+    self.expandThreshold = 1.5;
+    
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
     self.panGesture.delegate = self;
     [self addGestureRecognizer:self.panGesture];
@@ -619,17 +622,31 @@
         SwipeView *swipeView = viewArray[i];
         if(!swipeView) continue;
         
-        // 平移显示按钮
-        CGFloat translation = MIN(offset, currentSwipeView.bounds.size.width)*sign;
-        swipeView.transform = CGAffineTransformMakeTranslation(translation, 0);
-        if(currentSwipeView != swipeView) continue;
-        
-        [self getSwipeViewTransformMode];
-        currentSwipeView.mode = self.transformMode;
-        CGFloat t = MIN(1.0f, offset/currentSwipeView.bounds.size.width);
-        // swipeView的弹出、隐藏动画效果
-        [currentSwipeView swipeViewAnimationFromRight:self.swipeOffset<0 ? YES : NO effect:t cellHeight:CELL_HEIGHT];
+        BOOL expand = self.isAllowExpand && offset > currentSwipeView.frame.size.width * self.expandThreshold;
+        // 拉伸
+        if (expand) {
+            
+            self.targetOffset = currentSwipeView.frame.size.width * sign;
+        } else {
+            // 平移显示按钮
+            CGFloat translation = MIN(offset, currentSwipeView.bounds.size.width)*sign;
+            swipeView.transform = CGAffineTransformMakeTranslation(translation, 0);
+            if(currentSwipeView != swipeView) continue;
+            
+            [self getSwipeViewTransformMode];
+            currentSwipeView.mode = self.transformMode;
+            CGFloat t = MIN(1.0f, offset/currentSwipeView.bounds.size.width);
+            // swipeView的弹出、隐藏动画效果
+            [currentSwipeView swipeViewAnimationFromRight:self.swipeOffset<0 ? YES : NO effect:t cellHeight:CELL_HEIGHT];
+        }
     }
+}
+
+#pragma mark -- 拉伸
+
+- (void)expandToOffset:(CGFloat)offset
+{
+    
 }
 
 #pragma mark -- 懒加载

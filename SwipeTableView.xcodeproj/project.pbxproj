@@ -138,6 +138,7 @@
 				TargetAttributes = {
 					FECCB01A1D5C649D002FDD6C = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = C286J3CQWQ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -298,8 +299,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C286J3CQWQ;
 				INFOPLIST_FILE = SwipeTableView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = zhao.SwipeTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -314,8 +316,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C286J3CQWQ;
 				INFOPLIST_FILE = SwipeTableView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = zhao.SwipeTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -76,12 +76,25 @@ typedef NS_ENUM(NSUInteger, SwipeTableCellStyle)
 @interface SwipeTableCell : UITableViewCell
 
 @property (nonatomic, weak) id<SwipeTableViewCellDelegate> swipeDelegate;
-@property (nonatomic, strong) UIColor *swipeOverlayViewBackgroundColor; /**< swipeButton下的背景色 默认透明色*/
-@property (nonatomic, assign) BOOL isAllowMultipleSwipe; /**< 是否允许多个cell同时滑动 默认NO*/
-@property (nonatomic, assign) CGFloat swipeThreshold; /**< 当结束滑动手势时，显示或隐藏SwipeView的临界值 范围:0-1，默认0.5*/
+/** swipeButton下的背景色 默认透明色*/
+@property (nonatomic, strong) UIColor *swipeOverlayViewBackgroundColor;
+/** 当结束滑动手势时，显示或隐藏SwipeView的临界值 范围:0-1，默认0.5*/
+@property (nonatomic, assign) CGFloat swipeThreshold;
 
-@property (nonatomic, assign, readonly) BOOL hideSwipeViewWhenScrollTableView; /**< 滚动TableView时是否隐藏swipeView 默认YES*/
-@property (nonatomic, assign) BOOL hideSwipeViewWhenClickSwipeButton; /**< 点击按钮隐藏SwipeView 默认YES*/
+/** 是否允许多个cell同时滑动 默认NO*/
+@property (nonatomic, assign) BOOL isAllowMultipleSwipe;
+/** 滚动TableView时是否隐藏swipeView 默认YES*/
+@property (nonatomic, assign, readonly) BOOL hideSwipeViewWhenScrollTableView;
+/** 点击按钮隐藏SwipeView 默认YES*/
+@property (nonatomic, assign) BOOL hideSwipeViewWhenClickSwipeButton;
+
+
+/** 是否允许拉伸 默认NO(模仿系统邮件自带拉伸删除)*/
+@property (nonatomic, assign) BOOL isAllowExpand;
+/** 拉伸按钮的下标*/
+@property (nonatomic, assign) NSInteger expandSwipeBtnAtIndex;
+/** 拉伸临界值 1-2，默认1.5*/
+@property (nonatomic, assign) CGFloat expandThreshold;
 
 
 /**
