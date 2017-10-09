@@ -121,13 +121,16 @@
     [self initDatas];
 }
 
-// 若点击区域在tableView上 而不在cell上，滑动时也会自动隐藏swipeView
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     UIView *view = [super hitTest:point withEvent:event];
     
     if (!view)
     {
+        // bug fixed: swipeView显示后再次拖动swipeView 会出现快速闪动现象
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+        if (indexPath != nil) return view;
+        // 若点击区域在tableView上 而不在cell上，滑动时也会自动隐藏swipeView
         for(SwipeTableCell *cell in self.tableView.visibleCells) // 滑动cell时，自动隐藏swipeView
         {
             if(cell.hideSwipeViewWhenScrollTableView && !cell.swipeOverlayView.hidden)
@@ -155,7 +158,6 @@
     self.rightSwipeButtons = @[];
     self.leftSwipeButtons = @[];
     
-    
     [self getSwipeButtons];
     [self createSwipeOverlayViewIfNeed];
 }
@@ -172,7 +174,7 @@
     {
         self.panStartPoint = currentPanPoint;
         self.panStartOffset = self.swipeOffset;
-        
+        //NSLog(@"UIGestureRecognizerStateBegan:%f %f", self.panStartPoint.x, self.panStartOffset);
         [self createSwipeOverlayViewIfNeed];
         // 不允许多个cell同时能滑动，则移除上一个cell的滑动手势
         if(!_isAllowMultipleSwipe)
@@ -186,6 +188,7 @@
     else if(pan.state == UIGestureRecognizerStateChanged)
     {
         CGFloat offset = self.panStartOffset + currentPanPoint.x - self.panStartPoint.x;
+        //NSLog(@"UIGestureRecognizerStateChanged:%f %f", offset, currentPanPoint.x);
         // 重新swipeOffset的setter方法，监测滑动偏移量
         self.swipeOffset = [self filterSwipeOffset:offset];
     }
@@ -224,7 +227,7 @@
         _swipeOverlayView.hidden = YES;
         
         _swipeImageView = [[UIImageView alloc] initWithFrame:self.swipeOverlayView.bounds];
-//        _swipeImageView.userInteractionEnabled = YES;
+        _swipeImageView.userInteractionEnabled = YES;
         
         [_swipeOverlayView addSubview:_swipeImageView];
         [self.contentView addSubview:self.swipeOverlayView];
@@ -467,7 +470,7 @@
     return image;
 }
 
-/**< 删除所有子视图*/
+/** 删除所有子视图*/
 - (void)removeAllSubViewsAtView:(UIView *)view
 {
     while (view.subviews.count) {
@@ -491,8 +494,8 @@
     
     // 显示swipeOverlayView,并将移动后cell上的内容裁剪到swipeImageView上
     self.swipeImageView.image = [self fecthTranslatedCellInfo:self];
-    self.swipeImageView.userInteractionEnabled = YES;
     self.swipeOverlayView.hidden = NO;
+    self.swipeImageView.userInteractionEnabled = YES;
     
     // 隐藏cell上的内容
     [self hiddenAccesoryViewAndContentOfCellIfNeed:YES];
@@ -503,7 +506,7 @@
 }
 
 /**
- *  隐藏self.swipeImageView
+ * 隐藏self.swipeImageView
  */
 - (void)hiddenSwipeOverlayViewIfNeed
 {
@@ -513,6 +516,7 @@
     // 隐藏swipeImageView
     self.swipeOverlayView.hidden = YES;
     self.swipeImageView.image = nil;
+    self.swipeImageView.userInteractionEnabled = NO;
     
     // 若cell是选中状态 则滑动手势结束后还原cell的选中状态
     self.selectionStyle = self.previousSelectStyle;

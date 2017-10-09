@@ -25,14 +25,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, WIDTH, HEIGHT-64) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator= NO;
     [self.view addSubview:self.tableView];
     
-    for(int i=0; i<20; i++)
+    for(int i=0; i<5; i++)
     {
         TestModel *teModel = [[TestModel alloc] init];
         teModel.isRefreshButton = YES;
@@ -68,6 +67,7 @@
     TestModel *model = self.dataArray[indexPath.row];
     cell.textLabel.text = model.data;
     cell.textLabel.font = [UIFont systemFontOfSize:16];
+    cell.textLabel.textColor = [UIColor redColor];
     
     return cell;
 }
@@ -77,6 +77,10 @@
     NSLog(@"点击了section:%lu row:%lu", indexPath.section, indexPath.row);
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.1;
+}
 
 #pragma mark -- SwipeTableViewDelegate
 
