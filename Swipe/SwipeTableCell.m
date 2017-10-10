@@ -84,7 +84,7 @@
     self.swipeOverlayViewBackgroundColor = [UIColor clearColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    self.isAllowExpand = NO;
+    self.isAllowExpand = YES;
     self.expandThreshold = 1.5;
     
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
@@ -129,7 +129,8 @@
     {
         // bug fixed: swipeView显示后再次拖动swipeView 会出现快速闪动现象
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
-        if (indexPath != nil) return view;
+        if (indexPath != nil || point.y < 0) return view;
+        
         // 若点击区域在tableView上 而不在cell上，滑动时也会自动隐藏swipeView
         for(SwipeTableCell *cell in self.tableView.visibleCells) // 滑动cell时，自动隐藏swipeView
         {
@@ -174,7 +175,7 @@
     {
         self.panStartPoint = currentPanPoint;
         self.panStartOffset = self.swipeOffset;
-        //NSLog(@"UIGestureRecognizerStateBegan:%f %f", self.panStartPoint.x, self.panStartOffset);
+        
         [self createSwipeOverlayViewIfNeed];
         // 不允许多个cell同时能滑动，则移除上一个cell的滑动手势
         if(!_isAllowMultipleSwipe)
@@ -188,14 +189,13 @@
     else if(pan.state == UIGestureRecognizerStateChanged)
     {
         CGFloat offset = self.panStartOffset + currentPanPoint.x - self.panStartPoint.x;
-        //NSLog(@"UIGestureRecognizerStateChanged:%f %f", offset, currentPanPoint.x);
         // 重新swipeOffset的setter方法，监测滑动偏移量
         self.swipeOffset = [self filterSwipeOffset:offset];
     }
     else if(pan.state == UIGestureRecognizerStateEnded)
     {
         CGFloat velocity = [self.panGesture velocityInView:self].x;
-        CGFloat inertiaThreshold = 100; // 每秒走过多少像素
+        CGFloat inertiaThreshold = 300; // 每秒走过多少像素
         
         if(velocity > inertiaThreshold) // 快速左滑
         {
@@ -628,10 +628,13 @@
         
         BOOL expand = self.isAllowExpand && offset > currentSwipeView.frame.size.width * self.expandThreshold;
         // 拉伸
-        if (expand) {
-            
+        if (expand)
+        {
             self.targetOffset = currentSwipeView.frame.size.width * sign;
-        } else {
+            
+        }
+        else
+        {
             // 平移显示按钮
             CGFloat translation = MIN(offset, currentSwipeView.bounds.size.width)*sign;
             swipeView.transform = CGAffineTransformMakeTranslation(translation, 0);
@@ -646,7 +649,7 @@
     }
 }
 
-#pragma mark -- 拉伸
+#pragma mark -- expand
 
 - (void)expandToOffset:(CGFloat)offset
 {

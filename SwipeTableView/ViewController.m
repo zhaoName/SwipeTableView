@@ -31,7 +31,7 @@
     self.tableView.showsVerticalScrollIndicator= NO;
     [self.view addSubview:self.tableView];
     
-    for(int i=0; i<5; i++)
+    for(int i=0; i<20; i++)
     {
         TestModel *teModel = [[TestModel alloc] init];
         teModel.isRefreshButton = YES;
@@ -67,7 +67,6 @@
     TestModel *model = self.dataArray[indexPath.row];
     cell.textLabel.text = model.data;
     cell.textLabel.font = [UIFont systemFontOfSize:16];
-    cell.textLabel.textColor = [UIColor redColor];
     
     return cell;
 }
